@@ -78,7 +78,9 @@
           <p class="fc-desc" *ngIf="f.description">{{ f.description }}</p>
           <p class="fc-desc muted" *ngIf="!f.description">No description provided.</p>
           <div class="fc-footer">
-            <a routerLink="/register" class="btn-book" *ngIf="f.status === 'AVAILABLE'">Book This Room →</a>
+            <a [routerLink]="authService.currentUserValue ? '/customer/facilities' : '/login'" class="btn-book" *ngIf="f.status === 'AVAILABLE'">
+              {{ authService.currentUserValue ? 'Book This Room →' : 'Log in to Book →' }}
+            </a>
             <span class="btn-unavail" *ngIf="f.status !== 'AVAILABLE'">Currently Unavailable</span>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-landing',
@@ -12,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class LandingComponent implements OnInit {
   http = inject(HttpClient);
+  authService = inject(AuthService);
 
   facilities: any[] = [];
   loading = true;
