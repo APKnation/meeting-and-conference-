@@ -44,7 +44,7 @@ export class MeetingService {
     if (image) {
       formData.append('image', image);
     }
-    return this.http.put(API_URL + `facilities/${id}`, formData);
+    return this.http.post(API_URL + `facilities/${id}`, formData);
   }
   deleteFacility(id: number): Observable<any> {
     return this.http.delete(API_URL + `facilities/${id}`);

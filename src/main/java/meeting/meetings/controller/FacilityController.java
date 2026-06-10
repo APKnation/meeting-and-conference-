@@ -52,7 +52,7 @@ public class FacilityController {
         }
     }
 
-    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/{id}", consumes = {"multipart/form-data"})
     @PreAuthorize("hasRole('ADMIN') or hasRole('FACILITY_MANAGER')")
     public ResponseEntity<?> updateFacility(
             @PathVariable Long id,
