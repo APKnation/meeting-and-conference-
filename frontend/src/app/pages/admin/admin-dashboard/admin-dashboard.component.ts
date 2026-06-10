@@ -30,6 +30,7 @@ export class AdminDashboardComponent implements OnInit {
 
   // Facility form
   showAddFacility = false;
+  editingFacilityId: any = null;
   facilityForm: any = { name: '', capacity: 10, location: '', description: '', status: 'AVAILABLE' };
   selectedImage?: File;
 

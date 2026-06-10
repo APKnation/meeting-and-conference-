@@ -252,7 +252,7 @@
       </div>
 
       <div class="form-card" *ngIf="showAddFacility">
-        <h3>Add New Facility</h3>
+        <h3>{{ editingFacilityId ? 'Edit Facility' : 'Add New Facility' }}</h3>
         <form (ngSubmit)="saveFacility()">
           <div class="form-row">
             <div class="form-group"><label>Room Name</label><input [(ngModel)]="facilityForm.name" name="name" class="form-control" required placeholder="e.g. Board Room A"></div>
@@ -270,7 +270,7 @@
           <div class="form-group"><label>Facility Image</label><input type="file" (change)="onImageSelected($event)" accept="image/*" class="form-control"></div>
           <div class="form-group"><label>Description</label><input [(ngModel)]="facilityForm.description" name="description" class="form-control" placeholder="Equipment, features, etc."></div>
           <div class="form-actions">
-            <button class="btn-primary" type="submit">Save Facility</button>
+            <button class="btn-primary" type="submit">{{ editingFacilityId ? 'Update Facility' : 'Save Facility' }}</button>
             <button class="btn-sec" type="button" (click)="closeAddFacility()">Cancel</button>
           </div>
         </form>
@@ -287,7 +287,10 @@
               <td class="muted">{{ f.location || '—' }}</td>
               <td class="muted">{{ f.description || '—' }}</td>
               <td><span class="badge" [ngClass]="f.status==='AVAILABLE'?'s-avail':'s-busy'">{{ f.status }}</span></td>
-              <td><button class="btn-del" (click)="deleteFacility(f.id)">🗑 Delete</button></td>
+              <td>
+                <button class="btn-approve mr" (click)="editFacility(f)">✏️ Edit</button>
+                <button class="btn-del" (click)="deleteFacility(f.id)">🗑 Delete</button>
+              </td>
             </tr>
             <tr *ngIf="facilities.length===0"><td colspan="7" class="empty">No facilities yet. Click "+ Add Facility" to create one.</td></tr>
           </tbody>
