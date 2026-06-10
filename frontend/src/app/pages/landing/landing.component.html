@@ -52,8 +52,8 @@
         <div class="fc-image" *ngIf="f.imageUrl">
           <img [src]="'http://localhost:8080' + f.imageUrl" alt="{{f.name}}">
         </div>
-        <div class="fc-header" [ngClass]="f.status === 'AVAILABLE' ? 'fc-avail' : 'fc-busy'">
-          <span class="fc-status-badge">{{ f.status === 'AVAILABLE' ? 'Available' : 'Maintenance' }}</span>
+        <div class="fc-header" [ngClass]="{'fc-avail': f.status === 'AVAILABLE', 'fc-booked': f.status === 'BOOKED', 'fc-busy': f.status === 'UNDER_MAINTENANCE'}">
+          <span class="fc-status-badge">{{ f.status === 'AVAILABLE' ? 'Available' : f.status === 'BOOKED' ? 'Booked' : 'Maintenance' }}</span>
         </div>
         <div class="fc-body">
           <h3>{{ f.name }}</h3>
@@ -67,7 +67,8 @@
             <a [routerLink]="authService.currentUserValue ? '/customer/facilities' : '/login'" class="btn-book" *ngIf="f.status === 'AVAILABLE'">
               {{ authService.currentUserValue ? 'Book This Room →' : 'Log in to Book →' }}
             </a>
-            <span class="btn-unavail" *ngIf="f.status !== 'AVAILABLE'">Currently Unavailable</span>
+            <span class="btn-unavail" *ngIf="f.status === 'BOOKED'">Currently Booked</span>
+            <span class="btn-unavail" *ngIf="f.status === 'UNDER_MAINTENANCE'">Under Maintenance</span>
           </div>
         </div>
       </div>

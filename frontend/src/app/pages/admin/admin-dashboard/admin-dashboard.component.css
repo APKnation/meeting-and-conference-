@@ -113,8 +113,9 @@
 .role-ADMIN            { background: #ede9fe; color: #5b21b6; }
 .role-FACILITY_MANAGER { background: #dbeafe; color: #1d4ed8; }
 .role-CUSTOMER         { background: #dcfce7; color: #15803d; }
-.s-avail { background: #dcfce7; color: #15803d; }
-.s-busy  { background: #fee2e2; color: #dc2626; }
+.s-avail  { background: #dcfce7; color: #15803d; }
+.s-booked { background: #fef3c7; color: #b45309; }
+.s-busy   { background: #fee2e2; color: #dc2626; }
 .bk-PENDING   { background: #fef3c7; color: #b45309; }
 .bk-APPROVED  { background: #dcfce7; color: #15803d; }
 .bk-REJECTED  { background: #fee2e2; color: #dc2626; }

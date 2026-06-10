@@ -265,8 +265,9 @@
   justify-content: space-between;
   align-items: flex-start;
 }
-.fc-avail { background: linear-gradient(135deg, #e0f2fe, #dbeafe); }
-.fc-busy  { background: linear-gradient(135deg, #fef9c3, #fee2e2); }
+.fc-avail  { background: linear-gradient(135deg, #e0f2fe, #dbeafe); }
+.fc-booked { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+.fc-busy   { background: linear-gradient(135deg, #fef9c3, #fee2e2); }
 
 .fc-icon { font-size: 2.5rem; }
 
