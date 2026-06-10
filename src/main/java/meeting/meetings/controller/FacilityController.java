@@ -25,8 +25,7 @@ public class FacilityController {
     @Autowired
     private FacilityService facilityService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping
     public ResponseEntity<List<Facility>> getAllFacilities() {
