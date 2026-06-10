@@ -17,6 +17,11 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        if (user.getRole().name().equals("ADMIN")) {
+            throw new RuntimeException("Cannot delete the admin account.");
+        }
         userRepository.deleteById(id);
     }
 }
