@@ -67,8 +67,15 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   // ── Facilities ──
-  openAddFacility() { this.showAddFacility = true; this.selectedImage = undefined; this.facilityForm = { name: '', capacity: 10, location: '', description: '', status: 'AVAILABLE' }; }
-  closeAddFacility() { this.showAddFacility = false; this.selectedImage = undefined; }
+  openAddFacility() { this.showAddFacility = true; this.selectedImage = undefined; this.editingFacilityId = null; this.facilityForm = { name: '', capacity: 10, location: '', description: '', status: 'AVAILABLE' }; }
+  closeAddFacility() { this.showAddFacility = false; this.selectedImage = undefined; this.editingFacilityId = null; }
+
+  editFacility(f: any) {
+    this.showAddFacility = true;
+    this.selectedImage = undefined;
+    this.editingFacilityId = f.id;
+    this.facilityForm = { name: f.name, capacity: f.capacity, location: f.location, description: f.description, status: f.status };
+  }
 
   onImageSelected(event: any) {
     if (event.target.files.length > 0) {
@@ -77,10 +84,17 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   saveFacility() {
-    this.meetingService.createFacility(this.facilityForm, this.selectedImage).subscribe({
-      next: () => { this.meetingService.getAllFacilities().subscribe(d => this.facilities = d); this.meetingService.getStats().subscribe(d => this.stats = d); this.closeAddFacility(); },
-      error: err => alert(err.error?.message || 'Error saving facility')
-    });
+    if (this.editingFacilityId) {
+      this.meetingService.updateFacility(this.editingFacilityId, this.facilityForm, this.selectedImage).subscribe({
+        next: () => { this.meetingService.getAllFacilities().subscribe(d => this.facilities = d); this.meetingService.getStats().subscribe(d => this.stats = d); this.closeAddFacility(); },
+        error: err => alert(err.error?.message || 'Error updating facility')
+      });
+    } else {
+      this.meetingService.createFacility(this.facilityForm, this.selectedImage).subscribe({
+        next: () => { this.meetingService.getAllFacilities().subscribe(d => this.facilities = d); this.meetingService.getStats().subscribe(d => this.stats = d); this.closeAddFacility(); },
+        error: err => alert(err.error?.message || 'Error saving facility')
+      });
+    }
   }
 
   deleteFacility(id: number) {
