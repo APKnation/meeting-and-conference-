@@ -19,12 +19,12 @@ export class LandingComponent implements OnInit {
   loading = true;
 
   features = [
-    { icon: '🏢', title: 'Premium Rooms', desc: 'Fully equipped meeting rooms, board rooms and conference halls for every need.' },
-    { icon: '📅', title: 'Easy Booking', desc: 'Book your preferred facility in minutes. Real-time availability at your fingertips.' },
-    { icon: '🔒', title: 'Conflict-Free', desc: 'Our smart scheduling system automatically prevents double-bookings.' },
-    { icon: '📊', title: 'Live Updates', desc: 'Track your booking status instantly — from pending to approved.' },
-    { icon: '🧑‍💼', title: 'Managed by Experts', desc: 'Dedicated facility managers ensure every room is ready for your meeting.' },
-    { icon: '🔔', title: 'Notifications', desc: 'Get notified as soon as your booking is confirmed or updated.' }
+    { icon: '', title: 'Premium Rooms', desc: 'Fully equipped meeting rooms, board rooms and conference halls for every need.' },
+    { icon: '', title: 'Easy Booking', desc: 'Book your preferred facility in minutes. Real-time availability at your fingertips.' },
+    { icon: '', title: 'Conflict-Free', desc: 'Our smart scheduling system automatically prevents double-bookings.' },
+    { icon: '', title: 'Live Updates', desc: 'Track your booking status instantly — from pending to approved.' },
+    { icon: '', title: 'Managed by Experts', desc: 'Dedicated facility managers ensure every room is ready for your meeting.' },
+    { icon: '', title: 'Notifications', desc: 'Get notified as soon as your booking is confirmed or updated.' }
   ];
 
   ngOnInit(): void {

@@ -3,7 +3,7 @@
   <!-- ══════════ SIDEBAR ══════════ -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <div class="brand-icon">🛡️</div>
+      <div class="brand-icon"></div>
       <h2>Admin Panel</h2>
       <p class="sidebar-sub">Super Administrator</p>
     </div>
@@ -11,38 +11,38 @@
     <nav class="sidebar-nav">
       <p class="nav-section-label">OVERVIEW</p>
       <li [class.active]="activeTab==='dashboard'" (click)="setTab('dashboard')">
-        <span>📊</span> Dashboard
+        <span></span> Dashboard
       </li>
 
       <p class="nav-section-label">USER MANAGEMENT</p>
       <li [class.active]="activeTab==='users'" (click)="setTab('users')">
-        <span>👥</span> All Users
+        <span></span> All Users
       </li>
       <li [class.active]="activeTab==='fm-accounts'" (click)="setTab('fm-accounts')">
-        <span>🧑‍💼</span> Facility Managers
+        <span></span> Facility Managers
       </li>
       <li [class.active]="activeTab==='customers'" (click)="setTab('customers')">
-        <span>🧑‍🤝‍🧑</span> Customers
+        <span></span> Customers
       </li>
 
       <p class="nav-section-label">FACILITY MANAGEMENT</p>
       <li [class.active]="activeTab==='facilities'" (click)="setTab('facilities')">
-        <span>🏢</span> Meeting Rooms
+        <span></span> Meeting Rooms
       </li>
 
       <p class="nav-section-label">BOOKINGS</p>
       <li [class.active]="activeTab==='bookings'" (click)="setTab('bookings')">
-        <span>📅</span> All Bookings
+        <span></span> All Bookings
       </li>
 
       <p class="nav-section-label">ANALYTICS</p>
       <li [class.active]="activeTab==='reports'" (click)="setTab('reports')">
-        <span>📈</span> Reports & Statistics
+        <span></span> Reports & Statistics
       </li>
     </nav>
 
     <div class="sidebar-footer">
-      <div class="admin-badge">🔐 ADMIN</div>
+      <div class="admin-badge"> ADMIN</div>
       <p>abdulhameed&#64;gmail.com</p>
     </div>
   </aside>
@@ -61,42 +61,42 @@
 
       <div class="stats-grid">
         <div class="stat-card c-blue" (click)="setTab('users')" style="cursor:pointer">
-          <div class="stat-icon">👥</div>
+          <div class="stat-icon"></div>
           <div class="stat-body">
             <p class="stat-label">Total Users</p>
             <p class="stat-val">{{ stats?.totalUsers || 0 }}</p>
           </div>
         </div>
         <div class="stat-card c-purple" (click)="setTab('fm-accounts')" style="cursor:pointer">
-          <div class="stat-icon">🧑‍💼</div>
+          <div class="stat-icon"></div>
           <div class="stat-body">
             <p class="stat-label">Facility Managers</p>
             <p class="stat-val">{{ fmUsers.length }}</p>
           </div>
         </div>
         <div class="stat-card c-green" (click)="setTab('facilities')" style="cursor:pointer">
-          <div class="stat-icon">🏢</div>
+          <div class="stat-icon"></div>
           <div class="stat-body">
             <p class="stat-label">Facilities</p>
             <p class="stat-val">{{ stats?.totalFacilities || 0 }}</p>
           </div>
         </div>
         <div class="stat-card c-orange" (click)="setTab('bookings')" style="cursor:pointer">
-          <div class="stat-icon">📅</div>
+          <div class="stat-icon"></div>
           <div class="stat-body">
             <p class="stat-label">Total Bookings</p>
             <p class="stat-val">{{ stats?.totalBookings || 0 }}</p>
           </div>
         </div>
         <div class="stat-card c-red" (click)="setTab('bookings')" style="cursor:pointer">
-          <div class="stat-icon">⏳</div>
+          <div class="stat-icon"></div>
           <div class="stat-body">
             <p class="stat-label">Pending Approvals</p>
             <p class="stat-val">{{ pendingBookings.length }}</p>
           </div>
         </div>
         <div class="stat-card c-teal" (click)="setTab('reports')" style="cursor:pointer">
-          <div class="stat-icon">✅</div>
+          <div class="stat-icon"></div>
           <div class="stat-body">
             <p class="stat-label">Approved Bookings</p>
             <p class="stat-val">{{ approvedBookings.length }}</p>
@@ -107,10 +107,10 @@
       <div class="quick-actions">
         <h2>Quick Actions</h2>
         <div class="qa-grid">
-          <button class="qa-btn" (click)="setTab('users'); openAddUser()">➕ Add New User</button>
-          <button class="qa-btn" (click)="setTab('facilities'); openAddFacility()">🏢 Add Facility</button>
-          <button class="qa-btn" (click)="setTab('bookings')">📅 View Bookings</button>
-          <button class="qa-btn" (click)="setTab('reports')">📈 View Reports</button>
+          <button class="qa-btn" (click)="setTab('users'); openAddUser()"> Add New User</button>
+          <button class="qa-btn" (click)="setTab('facilities'); openAddFacility()"> Add Facility</button>
+          <button class="qa-btn" (click)="setTab('bookings')"> View Bookings</button>
+          <button class="qa-btn" (click)="setTab('reports')"> View Reports</button>
         </div>
       </div>
     </div>
@@ -167,7 +167,7 @@
               <td><div class="user-row"><div class="avatar">{{ u.name?.charAt(0) | uppercase }}</div><span>{{ u.name }}</span></div></td>
               <td class="muted">{{ u.email }}</td>
               <td><span class="badge role-{{u.role}}">{{ u.role }}</span></td>
-              <td><button class="btn-del" [disabled]="u.role==='ADMIN'" (click)="deleteUser(u.id)">🗑 Delete</button></td>
+              <td><button class="btn-del" [disabled]="u.role==='ADMIN'" (click)="deleteUser(u.id)"> Delete</button></td>
             </tr>
             <tr *ngIf="users.length===0"><td colspan="5" class="empty">No users found.</td></tr>
           </tbody>
@@ -208,7 +208,7 @@
               <td class="muted">{{ i+1 }}</td>
               <td><div class="user-row"><div class="avatar fm">{{ u.name?.charAt(0) | uppercase }}</div><span>{{ u.name }}</span></div></td>
               <td class="muted">{{ u.email }}</td>
-              <td><button class="btn-del" (click)="deleteUser(u.id)">🗑 Remove</button></td>
+              <td><button class="btn-del" (click)="deleteUser(u.id)"> Remove</button></td>
             </tr>
             <tr *ngIf="fmUsers.length===0"><td colspan="4" class="empty">No Facility Managers found.</td></tr>
           </tbody>
@@ -233,7 +233,7 @@
               <td><div class="user-row"><div class="avatar cust">{{ u.name?.charAt(0) | uppercase }}</div><span>{{ u.name }}</span></div></td>
               <td class="muted">{{ u.email }}</td>
               <td class="muted">{{ bookings.length > 0 ? (bookings | bookingsByUser: u.id).length : '—' }}</td>
-              <td><button class="btn-del" (click)="deleteUser(u.id)">🗑 Remove</button></td>
+              <td><button class="btn-del" (click)="deleteUser(u.id)"> Remove</button></td>
             </tr>
             <tr *ngIf="customers.length===0"><td colspan="5" class="empty">No customers found.</td></tr>
           </tbody>
@@ -288,8 +288,8 @@
               <td class="muted">{{ f.description || '—' }}</td>
               <td><span class="badge" [ngClass]="f.status==='AVAILABLE'?'s-avail':'s-busy'">{{ f.status }}</span></td>
               <td>
-                <button class="btn-approve mr" (click)="editFacility(f)">✏️ Edit</button>
-                <button class="btn-del" (click)="deleteFacility(f.id)">🗑 Delete</button>
+                <button class="btn-approve mr" (click)="editFacility(f)"> Edit</button>
+                <button class="btn-del" (click)="deleteFacility(f.id)"> Delete</button>
               </td>
             </tr>
             <tr *ngIf="facilities.length===0"><td colspan="7" class="empty">No facilities yet. Click "+ Add Facility" to create one.</td></tr>
@@ -320,8 +320,8 @@
               <td><span class="badge bk-{{b.status}}">{{ b.status }}</span></td>
               <td>
                 <ng-container *ngIf="b.status==='PENDING'">
-                  <button class="btn-approve mr" (click)="updateBookingStatus(b.id,'APPROVED')">✓ Approve</button>
-                  <button class="btn-del" (click)="updateBookingStatus(b.id,'REJECTED')">✗ Reject</button>
+                  <button class="btn-approve mr" (click)="updateBookingStatus(b.id,'APPROVED')"> Approve</button>
+                  <button class="btn-del" (click)="updateBookingStatus(b.id,'REJECTED')"> Reject</button>
                 </ng-container>
                 <button class="btn-cancel" *ngIf="b.status==='APPROVED'" (click)="updateBookingStatus(b.id,'CANCELLED')">Cancel</button>
                 <span *ngIf="b.status==='REJECTED' || b.status==='CANCELLED'" class="muted">—</span>
@@ -344,7 +344,7 @@
 
       <div class="report-grid">
         <div class="report-card">
-          <h3>📊 Booking Summary</h3>
+          <h3> Booking Summary</h3>
           <ul class="report-list">
             <li><span>Total Bookings</span><strong>{{ bookings.length }}</strong></li>
             <li><span>Pending</span><strong class="c-orange-t">{{ pendingBookings.length }}</strong></li>
@@ -354,7 +354,7 @@
           </ul>
         </div>
         <div class="report-card">
-          <h3>🏢 Facility Utilization</h3>
+          <h3> Facility Utilization</h3>
           <ul class="report-list">
             <li><span>Total Facilities</span><strong>{{ facilities.length }}</strong></li>
             <li><span>Available</span><strong class="c-green-t">{{ facilities | facilityStatus:'AVAILABLE' }}</strong></li>
@@ -369,7 +369,7 @@
           </div>
         </div>
         <div class="report-card">
-          <h3>👥 User Statistics</h3>
+          <h3> User Statistics</h3>
           <ul class="report-list">
             <li><span>Total Users</span><strong>{{ users.length }}</strong></li>
             <li><span>Facility Managers</span><strong class="c-blue-t">{{ fmUsers.length }}</strong></li>

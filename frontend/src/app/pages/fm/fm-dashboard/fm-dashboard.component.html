@@ -1,0 +1,157 @@
+<div class="admin-layout">
+
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">F</div>
+      <h2>FM Panel</h2>
+      <p class="sidebar-sub">Facility Manager</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">OVERVIEW</p>
+      <li [class.active]="activeTab==='dashboard'" (click)="setTab('dashboard')">
+        Dashboard
+      </li>
+
+      <p class="nav-section-label">MANAGEMENT</p>
+      <li [class.active]="activeTab==='facilities'" (click)="setTab('facilities')">
+        Meeting Rooms
+      </li>
+      <li [class.active]="activeTab==='bookings'" (click)="setTab('bookings')">
+        Bookings
+      </li>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="admin-badge">FM</div>
+    </div>
+  </aside>
+
+  <!-- ══════════ MAIN CONTENT ══════════ -->
+  <main class="main-content">
+
+    <!-- ───────── DASHBOARD ───────── -->
+    <div *ngIf="activeTab==='dashboard'" class="fade-in">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">FM Dashboard</h1>
+          <p class="page-sub">Manage your facilities and bookings efficiently.</p>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card c-green" (click)="setTab('facilities')" style="cursor:pointer">
+          <div class="stat-body">
+            <p class="stat-label">My Facilities</p>
+            <p class="stat-val">{{ facilities.length }}</p>
+          </div>
+        </div>
+        <div class="stat-card c-orange" (click)="setTab('bookings')" style="cursor:pointer">
+          <div class="stat-body">
+            <p class="stat-label">Total Bookings</p>
+            <p class="stat-val">{{ bookings.length }}</p>
+          </div>
+        </div>
+        <div class="stat-card c-red" (click)="setTab('bookings')" style="cursor:pointer">
+          <div class="stat-body">
+            <p class="stat-label">Pending Requests</p>
+            <p class="stat-val">{{ pendingBookings.length }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions mt-4">
+        <h2>Quick Actions</h2>
+        <div class="qa-grid">
+          <button class="qa-btn" (click)="setTab('facilities'); openAddFacility()">Add Facility</button>
+          <button class="qa-btn" (click)="setTab('bookings')">View Bookings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── FACILITIES ───────── -->
+    <div *ngIf="activeTab==='facilities'" class="fade-in">
+      <div class="section-header">
+        <div>
+          <h1 class="page-title">Facilities</h1>
+          <p class="page-sub">Add, edit, or delete meeting rooms.</p>
+        </div>
+        <button class="btn-primary" (click)="openAddFacility()">+ Add Facility</button>
+      </div>
+
+      <div class="form-card" *ngIf="showAddFacility">
+        <h3>{{ editingFacilityId ? 'Edit Facility' : 'Add New Facility' }}</h3>
+        <form (ngSubmit)="saveFacility()">
+          <div class="form-row">
+            <div class="form-group"><label>Room Name</label><input [(ngModel)]="newFacility.name" name="name" class="form-control" required></div>
+            <div class="form-group"><label>Capacity (people)</label><input type="number" [(ngModel)]="newFacility.capacity" name="capacity" class="form-control" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Location / Floor</label><input [(ngModel)]="newFacility.location" name="location" class="form-control"></div>
+            <div class="form-group"><label>Status</label>
+              <select [(ngModel)]="newFacility.status" name="status" class="form-control">
+                <option value="AVAILABLE">Available</option>
+                <option value="UNDER_MAINTENANCE">Under Maintenance</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label>Facility Image</label><input type="file" (change)="onImageSelected($event)" accept="image/*" class="form-control"></div>
+          <div class="form-group"><label>Description</label><input [(ngModel)]="newFacility.description" name="description" class="form-control"></div>
+          <div class="form-actions">
+            <button class="btn-primary" type="submit">{{ editingFacilityId ? 'Update' : 'Save' }}</button>
+            <button class="btn-sec" type="button" (click)="closeAddFacility()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="table-card mt-4">
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Name</th><th>Capacity</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let facility of facilities">
+              <td>{{ facility.id }}</td>
+              <td>{{ facility.name }}</td>
+              <td>{{ facility.capacity }}</td>
+              <td><span class="badge" [ngClass]="{'bg-green': facility.status==='AVAILABLE'}">{{ facility.status }}</span></td>
+              <td>
+                <button class="btn-sec mr-2 btn-sm" (click)="editFacility(facility)">Edit</button>
+                <button class="btn-danger btn-sm" (click)="deleteFacility(facility.id)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ───────── BOOKINGS ───────── -->
+    <div *ngIf="activeTab==='bookings'" class="fade-in">
+      <div class="section-header">
+        <div>
+          <h1 class="page-title">Booking Requests</h1>
+          <p class="page-sub">Approve or reject customer bookings.</p>
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Facility</th><th>Customer</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let booking of bookings">
+              <td>{{ booking.id }}</td>
+              <td>{{ booking.facility?.name || 'Unknown' }}</td>
+              <td>{{ booking.customer?.name || 'Unknown' }}</td>
+              <td>{{ booking.startTime | date:'short' }} - {{ booking.endTime | date:'shortTime' }}</td>
+              <td><span class="badge">{{ booking.status }}</span></td>
+              <td *ngIf="booking.status === 'PENDING'">
+                <button class="btn-success btn-sm mr-2" (click)="updateBookingStatus(booking.id, 'APPROVED')">Approve</button>
+                <button class="btn-danger btn-sm" (click)="updateBookingStatus(booking.id, 'REJECTED')">Reject</button>
+              </td>
+              <td *ngIf="booking.status !== 'PENDING'">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>

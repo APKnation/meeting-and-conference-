@@ -2,7 +2,7 @@
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-content">
-    <div class="hero-badge">🏆 #1 Meeting Booking Platform</div>
+    <div class="hero-badge">#1 Meeting Booking Platform</div>
     <h1>Book the Perfect<br><span class="gradient-text">Meeting Space</span></h1>
     <p class="hero-sub">
       Effortlessly discover, reserve and manage conference rooms and meeting facilities.
@@ -21,24 +21,9 @@
     </div>
   </div>
   <div class="hero-visual">
-    <div class="card-float card1">📅 Board Room A — <span class="status-dot"></span> Available</div>
-    <div class="card-float card2">✅ Booking Confirmed!</div>
-    <div class="card-float card3">🏢 15 Facilities Ready</div>
-  </div>
-</section>
-
-<!-- ══════════ FEATURES ══════════ -->
-<section class="features">
-  <div class="section-container">
-    <p class="section-eyebrow">WHY CHOOSE US</p>
-    <h2 class="section-title">Everything you need to manage bookings</h2>
-    <div class="features-grid">
-      <div class="feature-card" *ngFor="let f of features">
-        <div class="feat-icon">{{ f.icon }}</div>
-        <h3>{{ f.title }}</h3>
-        <p>{{ f.desc }}</p>
-      </div>
-    </div>
+    <div class="card-float card1">Board Room A — <span class="status-dot"></span> Available</div>
+    <div class="card-float card2">Booking Confirmed!</div>
+    <div class="card-float card3">15 Facilities Ready</div>
   </div>
 </section>
 
@@ -57,7 +42,6 @@
 
     <!-- Empty state -->
     <div class="empty-wrap" *ngIf="!loading && facilities.length === 0">
-      <div class="empty-icon">🏢</div>
       <h3>No facilities listed yet</h3>
       <p>Facility managers are setting things up. Check back soon!</p>
     </div>
@@ -69,14 +53,13 @@
           <img [src]="'http://localhost:8080' + f.imageUrl" alt="{{f.name}}">
         </div>
         <div class="fc-header" [ngClass]="f.status === 'AVAILABLE' ? 'fc-avail' : 'fc-busy'">
-          <span class="fc-icon">🏢</span>
-          <span class="fc-status-badge">{{ f.status === 'AVAILABLE' ? '✅ Available' : '🔧 Maintenance' }}</span>
+          <span class="fc-status-badge">{{ f.status === 'AVAILABLE' ? 'Available' : 'Maintenance' }}</span>
         </div>
         <div class="fc-body">
           <h3>{{ f.name }}</h3>
           <div class="fc-meta">
-            <span *ngIf="f.location">📍 {{ f.location }}</span>
-            <span>👥 {{ f.capacity }} people</span>
+            <span *ngIf="f.location">{{ f.location }}</span>
+            <span>Capacity: {{ f.capacity }} people</span>
           </div>
           <p class="fc-desc" *ngIf="f.description">{{ f.description }}</p>
           <p class="fc-desc muted" *ngIf="!f.description">No description provided.</p>
@@ -91,6 +74,23 @@
     </div>
   </div>
 </section>
+
+<!-- ══════════ FEATURES ══════════ -->
+<section class="features">
+  <div class="section-container">
+    <p class="section-eyebrow">WHY CHOOSE US</p>
+    <h2 class="section-title">Everything you need to manage bookings</h2>
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let f of features">
+        <div class="feat-icon" *ngIf="f.icon">{{ f.icon }}</div>
+        <h3>{{ f.title }}</h3>
+        <p>{{ f.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 
 <!-- ══════════ CTA ══════════ -->
 <section class="cta-section">
@@ -108,7 +108,7 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <strong>🏢 MeetingHub</strong>
+      <strong>MeetingHub</strong>
       <p>Smart conference room booking for modern teams.</p>
     </div>
     <div class="footer-links">
