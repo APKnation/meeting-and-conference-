@@ -70,11 +70,29 @@ public class BookingService {
     public Booking updateBookingStatus(Long bookingId, String status) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
-        
+
         booking.setStatus(status);
         booking = bookingRepository.save(booking);
 
-        createNotification(booking.getCustomer(), "Your booking request for " + booking.getFacility().getName() + " has been " + status + ".");
+        // Sync facility status based on booking decision
+        Facility facility = booking.getFacility();
+        if ("APPROVED".equals(status)) {
+            // Mark room as BOOKED
+            facility.setStatus("BOOKED");
+            facilityRepository.save(facility);
+        } else if ("REJECTED".equals(status) || "CANCELLED".equals(status)) {
+            // Only mark AVAILABLE if there are no other active APPROVED bookings
+            boolean hasOtherActiveBooking = bookingRepository.findByFacilityId(facility.getId())
+                    .stream()
+                    .anyMatch(b -> "APPROVED".equals(b.getStatus()) && !b.getId().equals(booking.getId()));
+            if (!hasOtherActiveBooking) {
+                facility.setStatus("AVAILABLE");
+                facilityRepository.save(facility);
+            }
+        }
+
+        createNotification(booking.getCustomer(),
+                "Your booking for " + facility.getName() + " has been " + status + ".");
 
         return booking;
     }

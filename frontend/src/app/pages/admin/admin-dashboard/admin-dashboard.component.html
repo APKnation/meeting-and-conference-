@@ -263,6 +263,7 @@
             <div class="form-group"><label>Status</label>
               <select [(ngModel)]="facilityForm.status" name="status" class="form-control">
                 <option value="AVAILABLE">Available</option>
+                <option value="BOOKED">Booked</option>
                 <option value="UNDER_MAINTENANCE">Under Maintenance</option>
               </select>
             </div>
@@ -286,7 +287,7 @@
               <td>{{ f.capacity }} pax</td>
               <td class="muted">{{ f.location || '—' }}</td>
               <td class="muted">{{ f.description || '—' }}</td>
-              <td><span class="badge" [ngClass]="f.status==='AVAILABLE'?'s-avail':'s-busy'">{{ f.status }}</span></td>
+              <td><span class="badge" [ngClass]="{'s-avail': f.status==='AVAILABLE', 's-booked': f.status==='BOOKED', 's-busy': f.status==='UNDER_MAINTENANCE'}">{{ f.status }}</span></td>
               <td>
                 <button class="btn-approve mr" (click)="editFacility(f)"> Edit</button>
                 <button class="btn-del" (click)="deleteFacility(f.id)"> Delete</button>
