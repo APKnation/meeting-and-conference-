@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { LandingComponent } from './pages/landing/landing.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard.component';
@@ -8,31 +9,12 @@ import { BrowseFacilitiesComponent } from './pages/customer/browse-facilities/br
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
+  { path: '', component: LandingComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { 
-    path: 'admin/dashboard', 
-    component: AdminDashboardComponent, 
-    canActivate: [authGuard], 
-    data: { roles: ['ADMIN'] } 
-  },
-  { 
-    path: 'fm/dashboard', 
-    component: FmDashboardComponent, 
-    canActivate: [authGuard], 
-    data: { roles: ['ADMIN', 'FACILITY_MANAGER'] } 
-  },
-  { 
-    path: 'customer/dashboard', 
-    component: CustomerDashboardComponent, 
-    canActivate: [authGuard], 
-    data: { roles: ['CUSTOMER'] } 
-  },
-  { 
-    path: 'customer/facilities', 
-    component: BrowseFacilitiesComponent, 
-    canActivate: [authGuard], 
-    data: { roles: ['CUSTOMER'] } 
-  },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }
+  { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [authGuard], data: { roles: ['ADMIN'] } },
+  { path: 'fm/dashboard', component: FmDashboardComponent, canActivate: [authGuard], data: { roles: ['ADMIN', 'FACILITY_MANAGER'] } },
+  { path: 'customer/dashboard', component: CustomerDashboardComponent, canActivate: [authGuard], data: { roles: ['CUSTOMER'] } },
+  { path: 'customer/facilities', component: BrowseFacilitiesComponent, canActivate: [authGuard], data: { roles: ['CUSTOMER'] } },
+  { path: '**', redirectTo: '' }
 ];

@@ -1,0 +1,116 @@
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🏆 #1 Meeting Booking Platform</div>
+    <h1>Book the Perfect<br><span class="gradient-text">Meeting Space</span></h1>
+    <p class="hero-sub">
+      Effortlessly discover, reserve and manage conference rooms and meeting facilities.
+      Designed for teams that value their time.
+    </p>
+    <div class="hero-actions">
+      <a routerLink="/register" class="btn-hero-primary">Get Started Free →</a>
+      <a routerLink="/login" class="btn-hero-outline">Sign In</a>
+    </div>
+    <div class="hero-stats">
+      <div class="h-stat"><strong>{{ facilities.length }}</strong><span>Facilities</span></div>
+      <div class="h-divider"></div>
+      <div class="h-stat"><strong>100%</strong><span>Online</span></div>
+      <div class="h-divider"></div>
+      <div class="h-stat"><strong>24/7</strong><span>Available</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="card-float card1">📅 Board Room A — <span class="status-dot"></span> Available</div>
+    <div class="card-float card2">✅ Booking Confirmed!</div>
+    <div class="card-float card3">🏢 15 Facilities Ready</div>
+  </div>
+</section>
+
+<!-- ══════════ FEATURES ══════════ -->
+<section class="features">
+  <div class="section-container">
+    <p class="section-eyebrow">WHY CHOOSE US</p>
+    <h2 class="section-title">Everything you need to manage bookings</h2>
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let f of features">
+        <div class="feat-icon">{{ f.icon }}</div>
+        <h3>{{ f.title }}</h3>
+        <p>{{ f.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FACILITIES ══════════ -->
+<section class="facilities-section" id="facilities">
+  <div class="section-container">
+    <p class="section-eyebrow">AVAILABLE SPACES</p>
+    <h2 class="section-title">Explore Our Facilities</h2>
+    <p class="section-sub">Browse all available meeting rooms and conference spaces. Sign in to make a booking.</p>
+
+    <!-- Loading -->
+    <div class="loading-wrap" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Loading facilities...</p>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-wrap" *ngIf="!loading && facilities.length === 0">
+      <div class="empty-icon">🏢</div>
+      <h3>No facilities listed yet</h3>
+      <p>Facility managers are setting things up. Check back soon!</p>
+    </div>
+
+    <!-- Facilities Grid -->
+    <div class="facilities-grid" *ngIf="!loading && facilities.length > 0">
+      <div class="facility-card" *ngFor="let f of facilities">
+        <div class="fc-header" [ngClass]="f.status === 'AVAILABLE' ? 'fc-avail' : 'fc-busy'">
+          <span class="fc-icon">🏢</span>
+          <span class="fc-status-badge">{{ f.status === 'AVAILABLE' ? '✅ Available' : '🔧 Maintenance' }}</span>
+        </div>
+        <div class="fc-body">
+          <h3>{{ f.name }}</h3>
+          <div class="fc-meta">
+            <span *ngIf="f.location">📍 {{ f.location }}</span>
+            <span>👥 {{ f.capacity }} people</span>
+          </div>
+          <p class="fc-desc" *ngIf="f.description">{{ f.description }}</p>
+          <p class="fc-desc muted" *ngIf="!f.description">No description provided.</p>
+          <div class="fc-footer">
+            <a routerLink="/register" class="btn-book" *ngIf="f.status === 'AVAILABLE'">Book This Room →</a>
+            <span class="btn-unavail" *ngIf="f.status !== 'AVAILABLE'">Currently Unavailable</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA ══════════ -->
+<section class="cta-section">
+  <div class="section-container cta-inner">
+    <h2>Ready to streamline your meetings?</h2>
+    <p>Join today and get instant access to all available facilities.</p>
+    <div class="cta-actions">
+      <a routerLink="/register" class="btn-hero-primary">Create Free Account</a>
+      <a routerLink="/login" class="btn-hero-outline cta-outline">Already have an account?</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong>🏢 MeetingHub</strong>
+      <p>Smart conference room booking for modern teams.</p>
+    </div>
+    <div class="footer-links">
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register">Register</a>
+      <a href="#facilities">Facilities</a>
+    </div>
+  </div>
+  <p class="footer-copy">© 2025 MeetingHub. All rights reserved.</p>
+</footer>
