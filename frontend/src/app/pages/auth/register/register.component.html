@@ -1,0 +1,59 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2 class="auth-title">Create an Account</h2>
+    <p class="auth-subtitle">Sign up to get started</p>
+
+    <div class="success-text" *ngIf="isSuccessful">
+      Registration successful! Redirecting to login...
+    </div>
+
+    <form *ngIf="!isSuccessful" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" [(ngModel)]="form.name" required #name="ngModel" class="form-control" />
+        <div class="error-text" *ngIf="name.errors && f.submitted">
+          Name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" [(ngModel)]="form.email" required email #email="ngModel" class="form-control" />
+        <div class="error-text" *ngIf="email.errors && f.submitted">
+          <span *ngIf="email.errors['required']">Email is required</span>
+          <span *ngIf="email.errors['email']">Must be a valid email</span>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="form.password" required minlength="6" #password="ngModel" class="form-control" />
+        <div class="error-text" *ngIf="password.errors && f.submitted">
+          <span *ngIf="password.errors['required']">Password is required</span>
+          <span *ngIf="password.errors['minlength']">Password must be at least 6 characters</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select id="role" name="role" [(ngModel)]="form.role" class="form-control">
+          <option value="CUSTOMER">Customer</option>
+          <option value="FACILITY_MANAGER">Facility Manager</option>
+          <option value="ADMIN">Administrator</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <button class="btn-primary btn-block" type="submit">Sign Up</button>
+      </div>
+
+      <div class="error-text" *ngIf="isSignUpFailed">
+        {{ errorMessage }}
+      </div>
+    </form>
+    
+    <div class="auth-footer" *ngIf="!isSuccessful">
+      Already have an account? <a routerLink="/login">Sign in</a>
+    </div>
+  </div>
+</div>
