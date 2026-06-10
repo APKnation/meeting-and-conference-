@@ -1,0 +1,207 @@
+<div class="admin-layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">🛡️</div>
+      <h2>Admin Panel</h2>
+      <p class="sidebar-sub">Super Administrator</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li [class.active]="activeTab==='dashboard'" (click)="setTab('dashboard')">
+        <span>📊</span> Dashboard
+      </li>
+      <li [class.active]="activeTab==='users'" (click)="setTab('users')">
+        <span>👥</span> Manage Users
+      </li>
+      <li [class.active]="activeTab==='facilities'" (click)="setTab('facilities')">
+        <span>🏢</span> Manage Facilities
+      </li>
+      <li [class.active]="activeTab==='bookings'" (click)="setTab('bookings')">
+        <span>📅</span> Manage Bookings
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <p>abdulhameed&#64;gmail.com</p>
+    </div>
+  </aside>
+
+  <!-- ── Main Content ── -->
+  <main class="main-content">
+
+    <!-- DASHBOARD -->
+    <div *ngIf="activeTab==='dashboard'" class="fade-in">
+      <h1 class="page-title">System Overview</h1>
+      <p class="page-sub">Real-time statistics of your platform.</p>
+
+      <div class="stats-grid">
+        <div class="stat-card s-blue">
+          <div class="stat-icon">👥</div>
+          <div>
+            <h3>Total Users</h3>
+            <p class="stat-val">{{ stats?.totalUsers || 0 }}</p>
+          </div>
+        </div>
+        <div class="stat-card s-purple">
+          <div class="stat-icon">🏢</div>
+          <div>
+            <h3>Facilities</h3>
+            <p class="stat-val">{{ stats?.totalFacilities || 0 }}</p>
+          </div>
+        </div>
+        <div class="stat-card s-green">
+          <div class="stat-icon">📅</div>
+          <div>
+            <h3>Bookings</h3>
+            <p class="stat-val">{{ stats?.totalBookings || 0 }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick links -->
+      <div class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="qa-grid">
+          <button class="qa-btn" (click)="setTab('users')">👥 View Users</button>
+          <button class="qa-btn" (click)="setTab('facilities')">🏢 Manage Facilities</button>
+          <button class="qa-btn" (click)="setTab('bookings')">📅 View Bookings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div *ngIf="activeTab==='users'" class="fade-in">
+      <div class="section-header">
+        <div>
+          <h1 class="page-title">User Management</h1>
+          <p class="page-sub">{{ users.length }} registered users</p>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of users; let i=index">
+              <td class="muted">{{ i+1 }}</td>
+              <td>
+                <div class="user-row">
+                  <div class="avatar">{{ u.name?.charAt(0) | uppercase }}</div>
+                  <span>{{ u.name }}</span>
+                </div>
+              </td>
+              <td class="muted">{{ u.email }}</td>
+              <td><span class="badge role-{{u.role}}">{{ u.role }}</span></td>
+              <td>
+                <button class="btn-del" [disabled]="u.role==='ADMIN'" (click)="deleteUser(u.id)">🗑 Delete</button>
+              </td>
+            </tr>
+            <tr *ngIf="users.length===0"><td colspan="5" class="empty">No users found.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FACILITIES -->
+    <div *ngIf="activeTab==='facilities'" class="fade-in">
+      <div class="section-header">
+        <div>
+          <h1 class="page-title">Facility Management</h1>
+          <p class="page-sub">{{ facilities.length }} facilities registered</p>
+        </div>
+        <button class="btn-primary" (click)="toggleAddFacility()">+ Add Facility</button>
+      </div>
+
+      <!-- Add Form -->
+      <div class="form-card" *ngIf="showAddFacility">
+        <h3>New Facility</h3>
+        <form (ngSubmit)="saveFacility()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Name</label>
+              <input [(ngModel)]="newFacility.name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Capacity</label>
+              <input type="number" [(ngModel)]="newFacility.capacity" name="capacity" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input [(ngModel)]="newFacility.location" name="location" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input [(ngModel)]="newFacility.description" name="description" class="form-control">
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" type="submit">Save Facility</button>
+            <button class="btn-sec" type="button" (click)="toggleAddFacility()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="table-card">
+        <table class="data-table">
+          <thead>
+            <tr><th>ID</th><th>Name</th><th>Capacity</th><th>Location</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let f of facilities">
+              <td class="muted">{{ f.id }}</td>
+              <td><strong>{{ f.name }}</strong></td>
+              <td>{{ f.capacity }} people</td>
+              <td class="muted">{{ f.location }}</td>
+              <td><span class="badge" [ngClass]="f.status==='AVAILABLE'?'s-avail':'s-busy'">{{ f.status }}</span></td>
+              <td><button class="btn-del" (click)="deleteFacility(f.id)">🗑 Delete</button></td>
+            </tr>
+            <tr *ngIf="facilities.length===0"><td colspan="6" class="empty">No facilities yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BOOKINGS -->
+    <div *ngIf="activeTab==='bookings'" class="fade-in">
+      <div class="section-header">
+        <div>
+          <h1 class="page-title">Booking Management</h1>
+          <p class="page-sub">{{ bookings.length }} total bookings</p>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <table class="data-table">
+          <thead>
+            <tr><th>ID</th><th>Facility</th><th>Customer</th><th>Start</th><th>End</th><th>Status</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let b of bookings">
+              <td class="muted">{{ b.id }}</td>
+              <td><strong>{{ b.facility?.name || '—' }}</strong></td>
+              <td>{{ b.customer?.name || '—' }}</td>
+              <td class="muted">{{ b.startTime | date:'short' }}</td>
+              <td class="muted">{{ b.endTime | date:'short' }}</td>
+              <td><span class="badge bk-{{b.status}}">{{ b.status }}</span></td>
+              <td>
+                <ng-container *ngIf="b.status==='PENDING'">
+                  <button class="btn-approve" (click)="updateBookingStatus(b.id,'APPROVED')">✓ Approve</button>
+                  <button class="btn-del ml" (click)="updateBookingStatus(b.id,'REJECTED')">✗ Reject</button>
+                </ng-container>
+                <span *ngIf="b.status!=='PENDING'" class="muted">—</span>
+              </td>
+            </tr>
+            <tr *ngIf="bookings.length===0"><td colspan="7" class="empty">No bookings yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
