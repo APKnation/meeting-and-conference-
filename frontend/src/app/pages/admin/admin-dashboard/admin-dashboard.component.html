@@ -267,6 +267,7 @@
               </select>
             </div>
           </div>
+          <div class="form-group"><label>Facility Image</label><input type="file" (change)="onImageSelected($event)" accept="image/*" class="form-control"></div>
           <div class="form-group"><label>Description</label><input [(ngModel)]="facilityForm.description" name="description" class="form-control" placeholder="Equipment, features, etc."></div>
           <div class="form-actions">
             <button class="btn-primary" type="submit">Save Facility</button>

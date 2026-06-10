@@ -30,11 +30,21 @@ export class MeetingService {
   getAllFacilities(): Observable<any> {
     return this.http.get(API_URL + 'facilities');
   }
-  createFacility(data: any): Observable<any> {
-    return this.http.post(API_URL + 'facilities', data);
+  createFacility(data: any, image?: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('facility', JSON.stringify(data));
+    if (image) {
+      formData.append('image', image);
+    }
+    return this.http.post(API_URL + 'facilities', formData);
   }
-  updateFacility(id: number, data: any): Observable<any> {
-    return this.http.put(API_URL + `facilities/${id}`, data);
+  updateFacility(id: number, data: any, image?: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('facility', JSON.stringify(data));
+    if (image) {
+      formData.append('image', image);
+    }
+    return this.http.put(API_URL + `facilities/${id}`, formData);
   }
   deleteFacility(id: number): Observable<any> {
     return this.http.delete(API_URL + `facilities/${id}`);

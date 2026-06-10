@@ -31,6 +31,7 @@ export class AdminDashboardComponent implements OnInit {
   // Facility form
   showAddFacility = false;
   facilityForm: any = { name: '', capacity: 10, location: '', description: '', status: 'AVAILABLE' };
+  selectedImage?: File;
 
   ngOnInit(): void {
     this.loadAll();
@@ -66,11 +67,17 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   // ── Facilities ──
-  openAddFacility() { this.showAddFacility = true; this.facilityForm = { name: '', capacity: 10, location: '', description: '', status: 'AVAILABLE' }; }
-  closeAddFacility() { this.showAddFacility = false; }
+  openAddFacility() { this.showAddFacility = true; this.selectedImage = undefined; this.facilityForm = { name: '', capacity: 10, location: '', description: '', status: 'AVAILABLE' }; }
+  closeAddFacility() { this.showAddFacility = false; this.selectedImage = undefined; }
+
+  onImageSelected(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedImage = event.target.files[0];
+    }
+  }
 
   saveFacility() {
-    this.meetingService.createFacility(this.facilityForm).subscribe({
+    this.meetingService.createFacility(this.facilityForm, this.selectedImage).subscribe({
       next: () => { this.meetingService.getAllFacilities().subscribe(d => this.facilities = d); this.meetingService.getStats().subscribe(d => this.stats = d); this.closeAddFacility(); },
       error: err => alert(err.error?.message || 'Error saving facility')
     });

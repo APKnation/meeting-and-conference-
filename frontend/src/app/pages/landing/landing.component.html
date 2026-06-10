@@ -65,6 +65,9 @@
     <!-- Facilities Grid -->
     <div class="facilities-grid" *ngIf="!loading && facilities.length > 0">
       <div class="facility-card" *ngFor="let f of facilities">
+        <div class="fc-image" *ngIf="f.imageUrl">
+          <img [src]="'http://localhost:8080' + f.imageUrl" alt="{{f.name}}">
+        </div>
         <div class="fc-header" [ngClass]="f.status === 'AVAILABLE' ? 'fc-avail' : 'fc-busy'">
           <span class="fc-icon">🏢</span>
           <span class="fc-status-badge">{{ f.status === 'AVAILABLE' ? '✅ Available' : '🔧 Maintenance' }}</span>
