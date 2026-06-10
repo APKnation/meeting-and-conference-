@@ -14,12 +14,19 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/facilities")
 public class FacilityController {
     @Autowired
     private FacilityService facilityService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @GetMapping
     public ResponseEntity<List<Facility>> getAllFacilities() {
@@ -31,18 +38,34 @@ public class FacilityController {
         return ResponseEntity.ok(facilityService.getFacilityById(id));
     }
 
-    @PostMapping
+    @PostMapping(consumes = {"multipart/form-data"})
     @PreAuthorize("hasRole('ADMIN') or hasRole('FACILITY_MANAGER')")
-    public ResponseEntity<?> createFacility(@Valid @RequestBody FacilityRequest request, @AuthenticationPrincipal User user) {
-        facilityService.createFacility(request, user);
-        return ResponseEntity.ok(new MessageResponse("Facility created successfully!"));
+    public ResponseEntity<?> createFacility(
+            @RequestParam("facility") String facilityJson,
+            @RequestParam(value = "image", required = false) MultipartFile image,
+            @AuthenticationPrincipal User user) {
+        try {
+            FacilityRequest request = objectMapper.readValue(facilityJson, FacilityRequest.class);
+            facilityService.createFacility(request, image, user);
+            return ResponseEntity.ok(new MessageResponse("Facility created successfully!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
     @PreAuthorize("hasRole('ADMIN') or hasRole('FACILITY_MANAGER')")
-    public ResponseEntity<?> updateFacility(@PathVariable Long id, @Valid @RequestBody FacilityRequest request) {
-        facilityService.updateFacility(id, request);
-        return ResponseEntity.ok(new MessageResponse("Facility updated successfully!"));
+    public ResponseEntity<?> updateFacility(
+            @PathVariable Long id,
+            @RequestParam("facility") String facilityJson,
+            @RequestParam(value = "image", required = false) MultipartFile image) {
+        try {
+            FacilityRequest request = objectMapper.readValue(facilityJson, FacilityRequest.class);
+            facilityService.updateFacility(id, request, image);
+            return ResponseEntity.ok(new MessageResponse("Facility updated successfully!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
     }
 
     @DeleteMapping("/{id}")
