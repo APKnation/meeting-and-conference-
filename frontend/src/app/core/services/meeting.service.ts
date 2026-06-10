@@ -22,6 +22,9 @@ export class MeetingService {
   deleteUser(id: number): Observable<any> {
     return this.http.delete(API_URL + `users/${id}`);
   }
+  register(data: any): Observable<any> {
+    return this.http.post('http://localhost:8080/api/auth/register', data);
+  }
 
   // Facilities
   getAllFacilities(): Observable<any> {

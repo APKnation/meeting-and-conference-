@@ -1,6 +1,6 @@
 <div class="admin-layout">
 
-  <!-- ── Sidebar ── -->
+  <!-- ══════════ SIDEBAR ══════════ -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="brand-icon">🛡️</div>
@@ -8,99 +8,166 @@
       <p class="sidebar-sub">Super Administrator</p>
     </div>
 
-    <ul class="sidebar-nav">
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">OVERVIEW</p>
       <li [class.active]="activeTab==='dashboard'" (click)="setTab('dashboard')">
         <span>📊</span> Dashboard
       </li>
+
+      <p class="nav-section-label">USER MANAGEMENT</p>
       <li [class.active]="activeTab==='users'" (click)="setTab('users')">
-        <span>👥</span> Manage Users
+        <span>👥</span> All Users
       </li>
+      <li [class.active]="activeTab==='fm-accounts'" (click)="setTab('fm-accounts')">
+        <span>🧑‍💼</span> Facility Managers
+      </li>
+      <li [class.active]="activeTab==='customers'" (click)="setTab('customers')">
+        <span>🧑‍🤝‍🧑</span> Customers
+      </li>
+
+      <p class="nav-section-label">FACILITY MANAGEMENT</p>
       <li [class.active]="activeTab==='facilities'" (click)="setTab('facilities')">
-        <span>🏢</span> Manage Facilities
+        <span>🏢</span> Meeting Rooms
       </li>
+
+      <p class="nav-section-label">BOOKINGS</p>
       <li [class.active]="activeTab==='bookings'" (click)="setTab('bookings')">
-        <span>📅</span> Manage Bookings
+        <span>📅</span> All Bookings
       </li>
-    </ul>
+
+      <p class="nav-section-label">ANALYTICS</p>
+      <li [class.active]="activeTab==='reports'" (click)="setTab('reports')">
+        <span>📈</span> Reports & Statistics
+      </li>
+    </nav>
 
     <div class="sidebar-footer">
+      <div class="admin-badge">🔐 ADMIN</div>
       <p>abdulhameed&#64;gmail.com</p>
     </div>
   </aside>
 
-  <!-- ── Main Content ── -->
+  <!-- ══════════ MAIN CONTENT ══════════ -->
   <main class="main-content">
 
-    <!-- DASHBOARD -->
+    <!-- ───────── DASHBOARD ───────── -->
     <div *ngIf="activeTab==='dashboard'" class="fade-in">
-      <h1 class="page-title">System Overview</h1>
-      <p class="page-sub">Real-time statistics of your platform.</p>
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">System Overview</h1>
+          <p class="page-sub">Welcome back! Here's what's happening in your system.</p>
+        </div>
+      </div>
 
       <div class="stats-grid">
-        <div class="stat-card s-blue">
+        <div class="stat-card c-blue" (click)="setTab('users')" style="cursor:pointer">
           <div class="stat-icon">👥</div>
-          <div>
-            <h3>Total Users</h3>
+          <div class="stat-body">
+            <p class="stat-label">Total Users</p>
             <p class="stat-val">{{ stats?.totalUsers || 0 }}</p>
           </div>
         </div>
-        <div class="stat-card s-purple">
+        <div class="stat-card c-purple" (click)="setTab('fm-accounts')" style="cursor:pointer">
+          <div class="stat-icon">🧑‍💼</div>
+          <div class="stat-body">
+            <p class="stat-label">Facility Managers</p>
+            <p class="stat-val">{{ fmUsers.length }}</p>
+          </div>
+        </div>
+        <div class="stat-card c-green" (click)="setTab('facilities')" style="cursor:pointer">
           <div class="stat-icon">🏢</div>
-          <div>
-            <h3>Facilities</h3>
+          <div class="stat-body">
+            <p class="stat-label">Facilities</p>
             <p class="stat-val">{{ stats?.totalFacilities || 0 }}</p>
           </div>
         </div>
-        <div class="stat-card s-green">
+        <div class="stat-card c-orange" (click)="setTab('bookings')" style="cursor:pointer">
           <div class="stat-icon">📅</div>
-          <div>
-            <h3>Bookings</h3>
+          <div class="stat-body">
+            <p class="stat-label">Total Bookings</p>
             <p class="stat-val">{{ stats?.totalBookings || 0 }}</p>
+          </div>
+        </div>
+        <div class="stat-card c-red" (click)="setTab('bookings')" style="cursor:pointer">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-body">
+            <p class="stat-label">Pending Approvals</p>
+            <p class="stat-val">{{ pendingBookings.length }}</p>
+          </div>
+        </div>
+        <div class="stat-card c-teal" (click)="setTab('reports')" style="cursor:pointer">
+          <div class="stat-icon">✅</div>
+          <div class="stat-body">
+            <p class="stat-label">Approved Bookings</p>
+            <p class="stat-val">{{ approvedBookings.length }}</p>
           </div>
         </div>
       </div>
 
-      <!-- Quick links -->
       <div class="quick-actions">
         <h2>Quick Actions</h2>
         <div class="qa-grid">
-          <button class="qa-btn" (click)="setTab('users')">👥 View Users</button>
-          <button class="qa-btn" (click)="setTab('facilities')">🏢 Manage Facilities</button>
+          <button class="qa-btn" (click)="setTab('users'); openAddUser()">➕ Add New User</button>
+          <button class="qa-btn" (click)="setTab('facilities'); openAddFacility()">🏢 Add Facility</button>
           <button class="qa-btn" (click)="setTab('bookings')">📅 View Bookings</button>
+          <button class="qa-btn" (click)="setTab('reports')">📈 View Reports</button>
         </div>
       </div>
     </div>
 
-    <!-- USERS -->
+    <!-- ───────── ALL USERS ───────── -->
     <div *ngIf="activeTab==='users'" class="fade-in">
       <div class="section-header">
         <div>
-          <h1 class="page-title">User Management</h1>
-          <p class="page-sub">{{ users.length }} registered users</p>
+          <h1 class="page-title">All Users</h1>
+          <p class="page-sub">Manage, create, and delete system accounts.</p>
         </div>
+        <button class="btn-primary" (click)="openAddUser()">+ Create User</button>
+      </div>
+
+      <div class="form-card" *ngIf="showAddUser">
+        <h3>Create New User</h3>
+        <form (ngSubmit)="saveUser()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input [(ngModel)]="userForm.name" name="name" class="form-control" required placeholder="John Doe">
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" [(ngModel)]="userForm.email" name="email" class="form-control" required placeholder="user@example.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" [(ngModel)]="userForm.password" name="password" class="form-control" required placeholder="min 6 characters">
+            </div>
+            <div class="form-group">
+              <label>Role</label>
+              <select [(ngModel)]="userForm.role" name="role" class="form-control">
+                <option value="CUSTOMER">Customer</option>
+                <option value="FACILITY_MANAGER">Facility Manager</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" type="submit">Create Account</button>
+            <button class="btn-sec" type="button" (click)="closeUserForm()">Cancel</button>
+          </div>
+        </form>
       </div>
 
       <div class="table-card">
         <table class="data-table">
-          <thead>
-            <tr>
-              <th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Action</th>
-            </tr>
-          </thead>
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Action</th></tr></thead>
           <tbody>
             <tr *ngFor="let u of users; let i=index">
               <td class="muted">{{ i+1 }}</td>
-              <td>
-                <div class="user-row">
-                  <div class="avatar">{{ u.name?.charAt(0) | uppercase }}</div>
-                  <span>{{ u.name }}</span>
-                </div>
-              </td>
+              <td><div class="user-row"><div class="avatar">{{ u.name?.charAt(0) | uppercase }}</div><span>{{ u.name }}</span></div></td>
               <td class="muted">{{ u.email }}</td>
               <td><span class="badge role-{{u.role}}">{{ u.role }}</span></td>
-              <td>
-                <button class="btn-del" [disabled]="u.role==='ADMIN'" (click)="deleteUser(u.id)">🗑 Delete</button>
-              </td>
+              <td><button class="btn-del" [disabled]="u.role==='ADMIN'" (click)="deleteUser(u.id)">🗑 Delete</button></td>
             </tr>
             <tr *ngIf="users.length===0"><td colspan="5" class="empty">No users found.</td></tr>
           </tbody>
@@ -108,98 +175,203 @@
       </div>
     </div>
 
-    <!-- FACILITIES -->
-    <div *ngIf="activeTab==='facilities'" class="fade-in">
+    <!-- ───────── FACILITY MANAGERS ───────── -->
+    <div *ngIf="activeTab==='fm-accounts'" class="fade-in">
       <div class="section-header">
         <div>
-          <h1 class="page-title">Facility Management</h1>
-          <p class="page-sub">{{ facilities.length }} facilities registered</p>
+          <h1 class="page-title">Facility Manager Accounts</h1>
+          <p class="page-sub">Manage FM accounts that handle room operations.</p>
         </div>
-        <button class="btn-primary" (click)="toggleAddFacility()">+ Add Facility</button>
+        <button class="btn-primary" (click)="userForm.role='FACILITY_MANAGER'; openAddUser()">+ Add FM</button>
       </div>
 
-      <!-- Add Form -->
-      <div class="form-card" *ngIf="showAddFacility">
-        <h3>New Facility</h3>
-        <form (ngSubmit)="saveFacility()">
+      <div class="form-card" *ngIf="showAddUser && userForm.role==='FACILITY_MANAGER'">
+        <h3>Create Facility Manager Account</h3>
+        <form (ngSubmit)="saveUser()">
           <div class="form-row">
-            <div class="form-group">
-              <label>Name</label>
-              <input [(ngModel)]="newFacility.name" name="name" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label>Capacity</label>
-              <input type="number" [(ngModel)]="newFacility.capacity" name="capacity" class="form-control" required>
-            </div>
+            <div class="form-group"><label>Full Name</label><input [(ngModel)]="userForm.name" name="name" class="form-control" required></div>
+            <div class="form-group"><label>Email</label><input type="email" [(ngModel)]="userForm.email" name="email" class="form-control" required></div>
           </div>
-          <div class="form-group">
-            <label>Location</label>
-            <input [(ngModel)]="newFacility.location" name="location" class="form-control">
-          </div>
-          <div class="form-group">
-            <label>Description</label>
-            <input [(ngModel)]="newFacility.description" name="description" class="form-control">
-          </div>
+          <div class="form-group"><label>Password</label><input type="password" [(ngModel)]="userForm.password" name="password" class="form-control" required></div>
           <div class="form-actions">
-            <button class="btn-primary" type="submit">Save Facility</button>
-            <button class="btn-sec" type="button" (click)="toggleAddFacility()">Cancel</button>
+            <button class="btn-primary" type="submit">Create FM Account</button>
+            <button class="btn-sec" type="button" (click)="closeUserForm()">Cancel</button>
           </div>
         </form>
       </div>
 
       <div class="table-card">
         <table class="data-table">
-          <thead>
-            <tr><th>ID</th><th>Name</th><th>Capacity</th><th>Location</th><th>Status</th><th>Action</th></tr>
-          </thead>
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Action</th></tr></thead>
           <tbody>
-            <tr *ngFor="let f of facilities">
-              <td class="muted">{{ f.id }}</td>
-              <td><strong>{{ f.name }}</strong></td>
-              <td>{{ f.capacity }} people</td>
-              <td class="muted">{{ f.location }}</td>
-              <td><span class="badge" [ngClass]="f.status==='AVAILABLE'?'s-avail':'s-busy'">{{ f.status }}</span></td>
-              <td><button class="btn-del" (click)="deleteFacility(f.id)">🗑 Delete</button></td>
+            <tr *ngFor="let u of fmUsers; let i=index">
+              <td class="muted">{{ i+1 }}</td>
+              <td><div class="user-row"><div class="avatar fm">{{ u.name?.charAt(0) | uppercase }}</div><span>{{ u.name }}</span></div></td>
+              <td class="muted">{{ u.email }}</td>
+              <td><button class="btn-del" (click)="deleteUser(u.id)">🗑 Remove</button></td>
             </tr>
-            <tr *ngIf="facilities.length===0"><td colspan="6" class="empty">No facilities yet.</td></tr>
+            <tr *ngIf="fmUsers.length===0"><td colspan="4" class="empty">No Facility Managers found.</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- BOOKINGS -->
-    <div *ngIf="activeTab==='bookings'" class="fade-in">
+    <!-- ───────── CUSTOMERS ───────── -->
+    <div *ngIf="activeTab==='customers'" class="fade-in">
       <div class="section-header">
         <div>
-          <h1 class="page-title">Booking Management</h1>
-          <p class="page-sub">{{ bookings.length }} total bookings</p>
+          <h1 class="page-title">Customer Accounts</h1>
+          <p class="page-sub">View all registered customers and their booking activity.</p>
         </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Bookings</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let u of customers; let i=index">
+              <td class="muted">{{ i+1 }}</td>
+              <td><div class="user-row"><div class="avatar cust">{{ u.name?.charAt(0) | uppercase }}</div><span>{{ u.name }}</span></div></td>
+              <td class="muted">{{ u.email }}</td>
+              <td class="muted">{{ bookings.length > 0 ? (bookings | bookingsByUser: u.id).length : '—' }}</td>
+              <td><button class="btn-del" (click)="deleteUser(u.id)">🗑 Remove</button></td>
+            </tr>
+            <tr *ngIf="customers.length===0"><td colspan="5" class="empty">No customers found.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ───────── FACILITIES ───────── -->
+    <div *ngIf="activeTab==='facilities'" class="fade-in">
+      <div class="section-header">
+        <div>
+          <h1 class="page-title">Meeting Rooms & Facilities</h1>
+          <p class="page-sub">Full CRUD operations on all conference rooms.</p>
+        </div>
+        <button class="btn-primary" (click)="openAddFacility()">+ Add Facility</button>
+      </div>
+
+      <div class="form-card" *ngIf="showAddFacility">
+        <h3>Add New Facility</h3>
+        <form (ngSubmit)="saveFacility()">
+          <div class="form-row">
+            <div class="form-group"><label>Room Name</label><input [(ngModel)]="facilityForm.name" name="name" class="form-control" required placeholder="e.g. Board Room A"></div>
+            <div class="form-group"><label>Capacity (people)</label><input type="number" [(ngModel)]="facilityForm.capacity" name="capacity" class="form-control" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Location / Floor</label><input [(ngModel)]="facilityForm.location" name="location" class="form-control" placeholder="e.g. 3rd Floor, Block B"></div>
+            <div class="form-group"><label>Status</label>
+              <select [(ngModel)]="facilityForm.status" name="status" class="form-control">
+                <option value="AVAILABLE">Available</option>
+                <option value="UNDER_MAINTENANCE">Under Maintenance</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label>Description</label><input [(ngModel)]="facilityForm.description" name="description" class="form-control" placeholder="Equipment, features, etc."></div>
+          <div class="form-actions">
+            <button class="btn-primary" type="submit">Save Facility</button>
+            <button class="btn-sec" type="button" (click)="closeAddFacility()">Cancel</button>
+          </div>
+        </form>
       </div>
 
       <div class="table-card">
         <table class="data-table">
-          <thead>
-            <tr><th>ID</th><th>Facility</th><th>Customer</th><th>Start</th><th>End</th><th>Status</th><th>Actions</th></tr>
-          </thead>
+          <thead><tr><th>ID</th><th>Name</th><th>Capacity</th><th>Location</th><th>Description</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let f of facilities">
+              <td class="muted">{{ f.id }}</td>
+              <td><strong>{{ f.name }}</strong></td>
+              <td>{{ f.capacity }} pax</td>
+              <td class="muted">{{ f.location || '—' }}</td>
+              <td class="muted">{{ f.description || '—' }}</td>
+              <td><span class="badge" [ngClass]="f.status==='AVAILABLE'?'s-avail':'s-busy'">{{ f.status }}</span></td>
+              <td><button class="btn-del" (click)="deleteFacility(f.id)">🗑 Delete</button></td>
+            </tr>
+            <tr *ngIf="facilities.length===0"><td colspan="7" class="empty">No facilities yet. Click "+ Add Facility" to create one.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ───────── ALL BOOKINGS ───────── -->
+    <div *ngIf="activeTab==='bookings'" class="fade-in">
+      <div class="section-header">
+        <div>
+          <h1 class="page-title">Booking Management</h1>
+          <p class="page-sub">Approve, reject or cancel all system bookings.</p>
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Facility</th><th>Customer</th><th>Start</th><th>End</th><th>Purpose</th><th>Status</th><th>Actions</th></tr></thead>
           <tbody>
             <tr *ngFor="let b of bookings">
               <td class="muted">{{ b.id }}</td>
               <td><strong>{{ b.facility?.name || '—' }}</strong></td>
               <td>{{ b.customer?.name || '—' }}</td>
-              <td class="muted">{{ b.startTime | date:'short' }}</td>
-              <td class="muted">{{ b.endTime | date:'short' }}</td>
+              <td class="muted">{{ b.startTime | date:'MMM d, y, h:mm a' }}</td>
+              <td class="muted">{{ b.endTime | date:'h:mm a' }}</td>
+              <td class="muted">{{ b.purpose || '—' }}</td>
               <td><span class="badge bk-{{b.status}}">{{ b.status }}</span></td>
               <td>
                 <ng-container *ngIf="b.status==='PENDING'">
-                  <button class="btn-approve" (click)="updateBookingStatus(b.id,'APPROVED')">✓ Approve</button>
-                  <button class="btn-del ml" (click)="updateBookingStatus(b.id,'REJECTED')">✗ Reject</button>
+                  <button class="btn-approve mr" (click)="updateBookingStatus(b.id,'APPROVED')">✓ Approve</button>
+                  <button class="btn-del" (click)="updateBookingStatus(b.id,'REJECTED')">✗ Reject</button>
                 </ng-container>
-                <span *ngIf="b.status!=='PENDING'" class="muted">—</span>
+                <button class="btn-cancel" *ngIf="b.status==='APPROVED'" (click)="updateBookingStatus(b.id,'CANCELLED')">Cancel</button>
+                <span *ngIf="b.status==='REJECTED' || b.status==='CANCELLED'" class="muted">—</span>
               </td>
             </tr>
-            <tr *ngIf="bookings.length===0"><td colspan="7" class="empty">No bookings yet.</td></tr>
+            <tr *ngIf="bookings.length===0"><td colspan="8" class="empty">No bookings yet.</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- ───────── REPORTS ───────── -->
+    <div *ngIf="activeTab==='reports'" class="fade-in">
+      <div class="section-header">
+        <div>
+          <h1 class="page-title">Reports & Statistics</h1>
+          <p class="page-sub">Monitor facility utilization and booking activities.</p>
+        </div>
+      </div>
+
+      <div class="report-grid">
+        <div class="report-card">
+          <h3>📊 Booking Summary</h3>
+          <ul class="report-list">
+            <li><span>Total Bookings</span><strong>{{ bookings.length }}</strong></li>
+            <li><span>Pending</span><strong class="c-orange-t">{{ pendingBookings.length }}</strong></li>
+            <li><span>Approved</span><strong class="c-green-t">{{ approvedBookings.length }}</strong></li>
+            <li><span>Rejected</span><strong class="c-red-t">{{ bookings | statusCount:'REJECTED' }}</strong></li>
+            <li><span>Cancelled</span><strong class="c-grey-t">{{ bookings | statusCount:'CANCELLED' }}</strong></li>
+          </ul>
+        </div>
+        <div class="report-card">
+          <h3>🏢 Facility Utilization</h3>
+          <ul class="report-list">
+            <li><span>Total Facilities</span><strong>{{ facilities.length }}</strong></li>
+            <li><span>Available</span><strong class="c-green-t">{{ facilities | facilityStatus:'AVAILABLE' }}</strong></li>
+            <li><span>Under Maintenance</span><strong class="c-red-t">{{ facilities | facilityStatus:'UNDER_MAINTENANCE' }}</strong></li>
+          </ul>
+          <div class="progress-bar-wrap" *ngIf="facilities.length">
+            <p>Availability Rate</p>
+            <div class="progress-track">
+              <div class="progress-fill" [style.width.%]="(facilities | facilityStatus:'AVAILABLE') / facilities.length * 100"></div>
+            </div>
+            <p class="progress-label">{{ (facilities | facilityStatus:'AVAILABLE') / facilities.length * 100 | number:'1.0-0' }}% available</p>
+          </div>
+        </div>
+        <div class="report-card">
+          <h3>👥 User Statistics</h3>
+          <ul class="report-list">
+            <li><span>Total Users</span><strong>{{ users.length }}</strong></li>
+            <li><span>Facility Managers</span><strong class="c-blue-t">{{ fmUsers.length }}</strong></li>
+            <li><span>Customers</span><strong class="c-purple-t">{{ customers.length }}</strong></li>
+          </ul>
+        </div>
       </div>
     </div>
 
