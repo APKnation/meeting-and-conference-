@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './fm-dashboard.component.html',
-  styleUrls: ['../../admin/admin-dashboard/admin-dashboard.component.css']
+  styleUrls: ['./fm-dashboard.component.css']
 })
 export class FmDashboardComponent implements OnInit {
   meetingService = inject(MeetingService);
@@ -34,6 +34,10 @@ export class FmDashboardComponent implements OnInit {
 
   get pendingBookings() {
     return this.bookings.filter(b => b.status === 'PENDING');
+  }
+
+  get approvedBookings() {
+    return this.bookings.filter(b => b.status === 'APPROVED');
   }
 
   loadFacilities() {
