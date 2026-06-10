@@ -33,6 +33,9 @@ public class Facility {
     @Column(nullable = false)
     private String status; // e.g. AVAILABLE, MAINTENANCE
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
     private User manager;
