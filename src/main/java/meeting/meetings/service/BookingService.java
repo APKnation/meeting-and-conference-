@@ -76,15 +76,15 @@ public class BookingService {
 
         // Sync facility status based on booking decision
         Facility facility = booking.getFacility();
+        final Long savedBookingId = bookingId; // effectively final for use in lambda
+
         if ("APPROVED".equals(status)) {
-            // Mark room as BOOKED
             facility.setStatus("BOOKED");
             facilityRepository.save(facility);
         } else if ("REJECTED".equals(status) || "CANCELLED".equals(status)) {
-            // Only mark AVAILABLE if there are no other active APPROVED bookings
             boolean hasOtherActiveBooking = bookingRepository.findByFacilityId(facility.getId())
                     .stream()
-                    .anyMatch(b -> "APPROVED".equals(b.getStatus()) && !b.getId().equals(booking.getId()));
+                    .anyMatch(b -> "APPROVED".equals(b.getStatus()) && !b.getId().equals(savedBookingId));
             if (!hasOtherActiveBooking) {
                 facility.setStatus("AVAILABLE");
                 facilityRepository.save(facility);
